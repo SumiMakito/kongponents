@@ -32,6 +32,53 @@
           role="region"
           class="k-popover"
         >
+          <template v-if="isOpen">
+            <div
+              v-if="$slots.title || title || $slots.actions"
+              class="k-popover-header d-flex"
+            >
+              <div
+                v-if="$slots.title || title"
+                class="k-popover-title"
+              >
+                <slot name="title">
+                  {{ title }}
+                </slot>
+              </div>
+              <div
+                v-if="$slots.actions"
+                class="k-popover-actions"
+              >
+                <slot name="actions" />
+              </div>
+            </div>
+            <div class="k-popover-content">
+              <slot name="content" />
+            </div>
+            <div
+              v-if="$slots.footer"
+              class="k-popover-footer"
+            >
+              <slot name="footer" />
+            </div>
+          </template>
+        </div>
+      </foreignObject>
+    </div>
+    <transition
+      v-else
+      name="fade"
+    >
+      <div
+        v-show="isOpen"
+        :id="popoverId"
+        ref="popper"
+        :style="popoverStyle"
+        :class="[popoverClasses, {'hide-caret': hideCaret }, { 'pb-0': $slots.actions }]"
+        role="region"
+        class="k-popover"
+      >
+        <template v-if="isOpen">
           <div
             v-if="$slots.title || title || $slots.actions"
             class="k-popover-header d-flex"
@@ -60,50 +107,7 @@
           >
             <slot name="footer" />
           </div>
-        </div>
-      </foreignObject>
-    </div>
-    <transition
-      v-else
-      name="fade"
-    >
-      <div
-        v-show="isOpen"
-        :id="popoverId"
-        ref="popper"
-        :style="popoverStyle"
-        :class="[popoverClasses, {'hide-caret': hideCaret }, { 'pb-0': $slots.actions }]"
-        role="region"
-        class="k-popover"
-      >
-        <div
-          v-if="$slots.title || title || $slots.actions"
-          class="k-popover-header d-flex"
-        >
-          <div
-            v-if="$slots.title || title"
-            class="k-popover-title"
-          >
-            <slot name="title">
-              {{ title }}
-            </slot>
-          </div>
-          <div
-            v-if="$slots.actions"
-            class="k-popover-actions"
-          >
-            <slot name="actions" />
-          </div>
-        </div>
-        <div class="k-popover-content">
-          <slot name="content" />
-        </div>
-        <div
-          v-if="$slots.footer"
-          class="k-popover-footer"
-        >
-          <slot name="footer" />
-        </div>
+        </template>
       </div>
     </transition>
   </component>
